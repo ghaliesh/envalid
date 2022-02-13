@@ -14,7 +14,7 @@ var path = filepath.Join(dirname, "../tmp/.env")
 
 func createTmpFile(data []byte) error {
 
-	err := os.WriteFile(path, data, 0664)
+	err := os.WriteFile(path, data, 0777)
 
 	return err
 }
@@ -33,8 +33,8 @@ func TestReadEnvFile(t *testing.T) {
 			require.Equal(t, expectedResult, actualResult)
 
 			// Clean up
-			err = os.Remove(path)
-			require.NoError(t, err)
+			// err = os.Remove(path)
+			// require.NoError(t, err)
 		})
 	}
 }
