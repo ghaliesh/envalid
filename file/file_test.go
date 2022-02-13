@@ -33,8 +33,8 @@ func TestReadEnvFile(t *testing.T) {
 			require.Equal(t, expectedResult, actualResult)
 
 			// Clean up
-			err = os.Remove(path)
-			require.NoError(t, err)
+			// err = os.Remove(path)
+			// require.NoError(t, err)
 		})
 	}
 }
