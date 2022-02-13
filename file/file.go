@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/ghaliesh/envalid/utils"
 )
 
 const (
@@ -38,7 +40,8 @@ func (ef *EnvFileReader) stringify(file []byte) string {
 }
 
 func (ef *EnvFileReader) getKeypair(pair string) (key string, value string) {
-	keyval := strings.Split(pair, pairsep)
+	_keyval := strings.Split(pair, pairsep)
+	keyval := utils.Filter(_keyval, func(s string) bool { return len(s) > 0 })
 	len := len(keyval)
 
 	// making sure the format is always [key, value]
@@ -48,8 +51,6 @@ func (ef *EnvFileReader) getKeypair(pair string) (key string, value string) {
 		key := fmt.Sprintf("%s%s", keyval[0], pairsep)
 		val := strings.Replace(pair, key, "", 1)
 		keyval = []string{keyval[0], val}
-	} else if len == 0 {
-		keyval = []string{"", ""}
 	}
 
 	key = keyval[0]
@@ -61,17 +62,13 @@ func (ef *EnvFileReader) getKeypair(pair string) (key string, value string) {
 func (ef *EnvFileReader) ReadEnvFile(path string) EnvKeyValuePairs {
 	file := ef.getFile(path)
 	str := ef.stringify(file)
-
 	pairs := strings.Split(str, linesep)
-	if len(pairs) == 0 {
-		panic(".env file is invalid")
-	}
 
 	var result = make(EnvKeyValuePairs)
 
 	for _, p := range pairs {
 		if len(p) > 1 {
-			key, value := ef.getKeypair(p)
+			key, value := ef.getKeypair(strings.TrimSpace(p))
 			if len(key) != 0 {
 				result[key] = value
 			}

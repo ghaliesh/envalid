@@ -8,4 +8,4 @@ type TestCase struct {
 
 type TestCases = []TestCase
 
-var testcases TestCases = []TestCase{tc_1, tc_2, tc_3}
+var testcases TestCases = []TestCase{tc_1, tc_2, tc_3, tc_4, tc_5}
