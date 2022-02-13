@@ -2,17 +2,19 @@ package envfilereader
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
 var envReader = EnvFileReader{}
-var path = "../tmp/.env"
+var dirname, _ = os.Getwd()
+var path = filepath.Join(dirname, "../tmp/.env")
 
 func createTmpFile(data []byte) error {
 
-	err := os.WriteFile(path, data, 0664)
+	err := os.WriteFile(path, data, 0777)
 
 	return err
 }
