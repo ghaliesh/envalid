@@ -1,23 +1,20 @@
 package envfilereader
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
-	"runtime"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
 var envReader = EnvFileReader{}
-
-var _, b, _, _ = runtime.Caller(0)
-var basepath = filepath.Dir(b)
-var dotenvpath = fmt.Sprintf("%s/.env", basepath)
+var dirname, _ = os.Getwd()
+var path = filepath.Join(dirname, "../tmp/.env")
 
 func createTmpFile(data []byte) error {
-	err := os.WriteFile(dotenvpath, data, 0664)
+
+	err := os.WriteFile(path, data, 0664)
 
 	return err
 }
@@ -25,13 +22,19 @@ func createTmpFile(data []byte) error {
 func TestReadEnvFile(t *testing.T) {
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
+			// Create .env file
 			envFile := []byte(tc.envFileContent)
 			err := createTmpFile(envFile)
 			require.NoError(t, err)
 
-			actualResult := envReader.ReadEnvFile(dotenvpath)
+			// Test result
+			actualResult := envReader.ReadEnvFile(path)
 			expectedResult := tc.expectedResult
 			require.Equal(t, expectedResult, actualResult)
+
+			// Clean up
+			err = os.Remove(path)
+			require.NoError(t, err)
 		})
 	}
 }
