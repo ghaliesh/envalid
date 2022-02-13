@@ -2,15 +2,13 @@ package envfilereader
 
 import (
 	"os"
-	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
 var envReader = EnvFileReader{}
-var dirname, _ = os.Getwd()
-var path = filepath.Join(dirname, "../tmp/.env")
+var path = "../tmp/.env"
 
 func createTmpFile(data []byte) error {
 

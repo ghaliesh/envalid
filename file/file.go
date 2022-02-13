@@ -79,5 +79,4 @@ func (ef *EnvFileReader) ReadEnvFile(path string) EnvKeyValuePairs {
 	}
 
 	return result
-
 }
