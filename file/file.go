@@ -1,6 +1,7 @@
 package envfilereader
 
 import (
+	"fmt"
 	"os"
 	"strings"
 )
@@ -44,14 +45,17 @@ func (ef *EnvFileReader) getKeypair(pair string) (key string, value string) {
 	if len == 1 {
 		keyval = []string{keyval[0], ""}
 	} else if len > 2 {
-		keyval = []string{keyval[0], strings.Replace(pair, keyval[0], "", 1)}
-	} else {
-		return "", ""
+		key := fmt.Sprintf("%s%s", keyval[0], pairsep)
+		val := strings.Replace(pair, key, "", 1)
+		keyval = []string{keyval[0], val}
+	} else if len == 0 {
+		keyval = []string{"", ""}
 	}
 
 	key = keyval[0]
 	value = keyval[1]
-	return key, value
+
+	return strings.TrimSpace(key), strings.TrimSpace(value)
 }
 
 func (ef *EnvFileReader) ReadEnvFile(path string) EnvKeyValuePairs {
@@ -66,8 +70,12 @@ func (ef *EnvFileReader) ReadEnvFile(path string) EnvKeyValuePairs {
 	var result = make(EnvKeyValuePairs)
 
 	for _, p := range pairs {
-		key, value := ef.getKeypair(p)
-		result[key] = value
+		if len(p) > 1 {
+			key, value := ef.getKeypair(p)
+			if len(key) != 0 {
+				result[key] = value
+			}
+		}
 	}
 
 	return result
