@@ -34,3 +34,24 @@ func TestFilter(t *testing.T) {
 	require.Zero(t, len(strsAfterRemovingEverything))
 
 }
+
+var (
+	length     = 5
+	timesToRun = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+)
+
+func TestRandom(t *testing.T) {
+	results := []string{}
+
+	result := RandomString(length)
+	require.Len(t, result, length)
+
+	results = append(results, result)
+
+	for range timesToRun {
+		res := RandomString(length)
+		require.NotContains(t, results, res)
+
+		results = append(results, res)
+	}
+}
