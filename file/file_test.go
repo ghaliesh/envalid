@@ -11,12 +11,21 @@ import (
 var envReader = EnvFileReader{}
 var dirname, _ = os.Getwd()
 var path = filepath.Join(dirname, "../tmp/.env")
+var invalidpath = "in/valid/pa/th"
 
 func createTmpFile(data []byte) error {
 
 	err := os.WriteFile(path, data, 0777)
 
 	return err
+}
+
+func funcToPanicDuetoEmptyFile() {
+	envReader.ReadEnvFile(path)
+}
+
+func funcToPanicDuetoNonExistentPath() {
+	envReader.ReadEnvFile(invalidpath)
 }
 
 func TestReadEnvFile(t *testing.T) {
@@ -27,14 +36,19 @@ func TestReadEnvFile(t *testing.T) {
 			err := createTmpFile(envFile)
 			require.NoError(t, err)
 
+			// Edge case: Fucntion Panic
+			if len(tc.envFileContent) == 0 {
+				require.Panics(t, funcToPanicDuetoEmptyFile)
+				return
+			}
+
 			// Test result
 			actualResult := envReader.ReadEnvFile(path)
 			expectedResult := tc.expectedResult
 			require.Equal(t, expectedResult, actualResult)
 
-			// Clean up
-			// err = os.Remove(path)
-			// require.NoError(t, err)
 		})
 	}
+
+	require.Panics(t, funcToPanicDuetoNonExistentPath)
 }
