@@ -5,7 +5,6 @@ import (
 	"reflect"
 
 	reader "github.com/ghaliesh/envalid/file"
-	"github.com/ghaliesh/envalid/utils"
 )
 
 type FieldInfo = map[string]interface{}
@@ -39,41 +38,11 @@ func Validate(validator interface{}, path string) {
 			panic(fmt.Errorf("all .env file keys should be strings"))
 		}
 
-		exists := utils.Exists(envFile, key, true)
-		if !exists {
-			err := utils.KeyDoesNotExistsError(key)
-			panic(err)
-		}
+		checkKeyExist(envFile, key)
 
 		envalue := envFile[key]
 		typeof := rule["type"].(reflect.Kind)
-
-		switch typeof {
-		case
-			reflect.Int, reflect.Int8,
-			reflect.Int16, reflect.Int32,
-			reflect.Int64:
-			checkInt(envalue, key)
-
-		case
-			reflect.Uint, reflect.Uint16,
-			reflect.Uint8, reflect.Uint32,
-			reflect.Uint64:
-			checkUnitInt(envalue, key)
-
-		case reflect.Float32, reflect.Float64:
-			checkFloat(envalue, key)
-
-		case reflect.Bool:
-			checkBool(envalue, key)
-
-		case reflect.String:
-			checkString(envalue, key)
-
-		default:
-			panic("")
-
-		}
+		checkType(typeof, key, envalue)
 	}
 
 }

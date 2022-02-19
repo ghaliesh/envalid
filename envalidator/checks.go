@@ -1,10 +1,49 @@
 package envalidator
 
 import (
+	"reflect"
 	"strconv"
 
+	reader "github.com/ghaliesh/envalid/file"
 	"github.com/ghaliesh/envalid/utils"
 )
+
+func checkKeyExist(envFile reader.EnvKeyValuePairs, key string) {
+	exists := utils.Exists(envFile, key, true)
+	if !exists {
+		err := utils.KeyDoesNotExistsError(key)
+		panic(err)
+	}
+}
+
+func checkType(typeof reflect.Kind, key, value string) {
+	switch typeof {
+	case
+		reflect.Int, reflect.Int8,
+		reflect.Int16, reflect.Int32,
+		reflect.Int64:
+		checkInt(value, key)
+
+	case
+		reflect.Uint, reflect.Uint16,
+		reflect.Uint8, reflect.Uint32,
+		reflect.Uint64:
+		checkUnitInt(value, key)
+
+	case reflect.Float32, reflect.Float64:
+		checkFloat(value, key)
+
+	case reflect.Bool:
+		checkBool(value, key)
+
+	case reflect.String:
+		checkString(value, key)
+
+	default:
+		panic("")
+
+	}
+}
 
 func checkForError(err error, key, val, typeof string) {
 	if err != nil {
