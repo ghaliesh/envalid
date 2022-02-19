@@ -70,3 +70,8 @@ func TestKeyDoesNotExistError(t *testing.T) {
 	require.Error(t, err)
 	require.Equal(t, err.Error(), "key is missing from .env file")
 }
+
+func TestKeyKeyIsNotOfRightTypeError(t *testing.T) {
+	err := KeyIsNotOfRightTypeError("key", "int", "value")
+	require.Error(t, err)
+}
