@@ -14,15 +14,12 @@ type Fields = []FieldInfo
 func getEnvFields(g interface{}) Fields {
 	var result Fields
 
-	v := reflect.ValueOf(g)
 	allFields := reflect.VisibleFields(reflect.TypeOf(g))
-	for i, f := range allFields {
-
+	for _, f := range allFields {
 		fieldInfo := FieldInfo{
-			"key":   f.Name,
-			"value": v.Field(i).Interface(),
-			"type":  f.Type,
-			"tags":  f.Tag,
+			"key":  f.Name,
+			"type": f.Type,
+			"tags": f.Tag,
 		}
 		result = append(result, fieldInfo)
 	}
@@ -42,35 +39,32 @@ func Validate(validator interface{}, path string) {
 			panic(fmt.Errorf("all .env file keys should be strings"))
 		}
 
-		_, err := utils.FindOne(envFile, key)
-		if err != nil {
-			panic(err.Error())
+		exists := utils.Exists(envFile, key)
+		if exists {
+			panic("")
 		}
 
 		envalue := envFile[key]
 		typeof := rule["type"].(reflect.Type).Kind()
 
 		switch typeof {
-		case reflect.Int:
-		case reflect.Int16:
-		case reflect.Int8:
-		case reflect.Int32:
-		case reflect.Int64:
-			fmt.Println("Integers", envalue)
+		case
+			reflect.Int, reflect.Int8,
+			reflect.Int16, reflect.Int32,
+			reflect.Int64:
+			fmt.Println("Int", envalue)
 
-		case reflect.Uint:
-		case reflect.Uint8:
-		case reflect.Uint16:
-		case reflect.Uint32:
-		case reflect.Uint64:
-			fmt.Println("Unsigned integers", envalue)
+		case
+			reflect.Uint, reflect.Uint16,
+			reflect.Uint8, reflect.Uint32,
+			reflect.Uint64:
+			fmt.Println("Unit", envalue)
 
-		case reflect.Float32:
-		case reflect.Float64:
-			fmt.Println("Floats", envalue)
+		case reflect.Float32, reflect.Float64:
+			fmt.Println("Float", envalue)
 
 		case reflect.Bool:
-			fmt.Println("Boolean", envalue)
+			fmt.Println("Bool", envalue)
 
 		case reflect.String:
 			fmt.Println("String", envalue)

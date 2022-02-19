@@ -55,3 +55,12 @@ func TestRandom(t *testing.T) {
 		results = append(results, res)
 	}
 }
+
+func TestExists(t *testing.T) {
+	for _, tc := range existstc {
+		t.Run(tc.name, func(t *testing.T) {
+			result := Exists(tc.dict, tc.target, tc.lookForKeys)
+			require.Equal(t, tc.shouldExist, result)
+		})
+	}
+}
