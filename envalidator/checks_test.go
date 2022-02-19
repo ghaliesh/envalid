@@ -21,3 +21,17 @@ func TestCheckExists(t *testing.T) {
 		})
 	}
 }
+
+func TestPanicIfError(t *testing.T) {
+	for _, tc := range panicIfErrorTCs {
+		t.Run(tc.name, func(t *testing.T) {
+			wrapper := func() { panicIfError(tc.err, tc.key, tc.val, tc.val) }
+
+			if tc.shouldPanic {
+				require.Panics(t, wrapper)
+			} else {
+				require.NotPanics(t, wrapper)
+			}
+		})
+	}
+}

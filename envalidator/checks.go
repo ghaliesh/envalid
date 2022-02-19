@@ -47,7 +47,7 @@ func checkType(typeof reflect.Kind, key, value string) {
 	}
 }
 
-func checkForError(err error, key, val, typeof string) {
+func panicIfError(err error, key, val, typeof string) {
 	if err != nil {
 		err = utils.KeyIsNotOfRightTypeError(key, val, typeof)
 		panic(err)
@@ -56,17 +56,17 @@ func checkForError(err error, key, val, typeof string) {
 
 func checkInt(val string, key string) {
 	_, err := strconv.ParseInt(val, 0, 64)
-	checkForError(err, key, val, "int")
+	panicIfError(err, key, val, "int")
 }
 
 func checkUnitInt(val string, key string) {
 	_, err := strconv.ParseUint(val, 0, 64)
-	checkForError(err, key, val, "unit")
+	panicIfError(err, key, val, "unit")
 }
 
 func checkFloat(val string, key string) {
 	_, err := strconv.ParseFloat(val, 64)
-	checkForError(err, key, val, "float")
+	panicIfError(err, key, val, "float")
 }
 
 func checkString(val string, key string) {
