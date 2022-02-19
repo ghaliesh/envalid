@@ -1,4 +1,4 @@
-package envfilereader
+package reader
 
 type TestCase struct {
 	name           string

@@ -1,4 +1,4 @@
-package envfilereader
+package reader
 
 var tc5_content = ""
 

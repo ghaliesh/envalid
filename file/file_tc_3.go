@@ -1,4 +1,4 @@
-package envfilereader
+package reader
 
 import "fmt"
 
