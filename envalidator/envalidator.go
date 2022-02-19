@@ -39,9 +39,10 @@ func Validate(validator interface{}, path string) {
 			panic(fmt.Errorf("all .env file keys should be strings"))
 		}
 
-		exists := utils.Exists(envFile, key)
+		exists := utils.Exists(envFile, key, true)
 		if exists {
-			panic("")
+			err := utils.KeyDoesNotExistsError(key)
+			panic(err)
 		}
 
 		envalue := envFile[key]

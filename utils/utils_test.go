@@ -57,10 +57,16 @@ func TestRandom(t *testing.T) {
 }
 
 func TestExists(t *testing.T) {
-	for _, tc := range existstc {
+	for _, tc := range existsTestcases {
 		t.Run(tc.name, func(t *testing.T) {
 			result := Exists(tc.dict, tc.target, tc.lookForKeys)
 			require.Equal(t, tc.shouldExist, result)
 		})
 	}
+}
+
+func TestKeyDoesNotExistError(t *testing.T) {
+	err := KeyDoesNotExistsError("key")
+	require.Error(t, err)
+	require.Equal(t, err.Error(), "key is missing from .env file")
 }
