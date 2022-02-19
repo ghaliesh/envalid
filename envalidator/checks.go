@@ -8,8 +8,10 @@ import (
 	"github.com/ghaliesh/envalid/utils"
 )
 
-func checkKeyExist(envFile reader.EnvKeyValuePairs, key string) {
-	exists := utils.Exists(envFile, key, true)
+type dictType = reader.EnvKeyValuePairs
+
+func checkKeyExist(dict dictType, key string) {
+	exists := utils.Exists(dict, key, true)
 	if !exists {
 		err := utils.KeyDoesNotExistsError(key)
 		panic(err)
