@@ -40,7 +40,7 @@ func Validate(validator interface{}, path string) {
 		}
 
 		exists := utils.Exists(envFile, key, true)
-		if exists {
+		if !exists {
 			err := utils.KeyDoesNotExistsError(key)
 			panic(err)
 		}
@@ -53,22 +53,22 @@ func Validate(validator interface{}, path string) {
 			reflect.Int, reflect.Int8,
 			reflect.Int16, reflect.Int32,
 			reflect.Int64:
-			fmt.Println("Int", envalue)
+			checkInt(envalue, key)
 
 		case
 			reflect.Uint, reflect.Uint16,
 			reflect.Uint8, reflect.Uint32,
 			reflect.Uint64:
-			fmt.Println("Unit", envalue)
+			checkUnitInt(envalue, key)
 
 		case reflect.Float32, reflect.Float64:
-			fmt.Println("Float", envalue)
+			checkFloat(envalue, key)
 
 		case reflect.Bool:
-			fmt.Println("Bool", envalue)
+			checkBool(envalue, key)
 
 		case reflect.String:
-			fmt.Println("String", envalue)
+			checkString(envalue, key)
 
 		default:
 			panic("")
