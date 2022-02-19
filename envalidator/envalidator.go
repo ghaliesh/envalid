@@ -18,7 +18,7 @@ func getEnvFields(g interface{}) Fields {
 	for _, f := range allFields {
 		fieldInfo := FieldInfo{
 			"key":  f.Name,
-			"type": f.Type,
+			"type": f.Type.Kind(),
 			"tags": f.Tag,
 		}
 		result = append(result, fieldInfo)
@@ -46,7 +46,7 @@ func Validate(validator interface{}, path string) {
 		}
 
 		envalue := envFile[key]
-		typeof := rule["type"].(reflect.Type).Kind()
+		typeof := rule["type"].(reflect.Kind)
 
 		switch typeof {
 		case

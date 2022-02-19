@@ -1,28 +1,36 @@
 package envalidator
 
-type InputStuct struct {
-	A string
-	B int16
-	C int64
-	D string
+import "reflect"
+
+type GetEnvFieldsTestCases struct {
+	name   string
+	arg    interface{}
+	result Fields
 }
 
-type TestCase struct {
-	input InputStuct
-	keys  []string
-	valus []interface{}
-	types []string
+type tc1ArgType struct {
+	A int
+	B uint
+	c string
+	m float32
+	N float64
+	K int32
 }
 
-var testcases []TestCase = []TestCase{
+var tc1Results Fields = Fields{
+	FieldInfo{"key": "A", "type": reflect.Int, "tags": ""},
+	FieldInfo{"key": "B", "type": reflect.Uint, "tags": ""},
+	FieldInfo{"key": "c", "type": reflect.String, "tags": ""},
+	FieldInfo{"key": "m", "type": reflect.Float32, "tags": ""},
+	FieldInfo{"key": "N", "type": reflect.Float64, "tags": ""},
+	FieldInfo{"key": "K", "type": reflect.Int32, "tags": ""},
+}
+
+var getEnvFieldsTC []GetEnvFieldsTestCases = []GetEnvFieldsTestCases{
 	{
-		input: InputStuct{
-			A: "1",
-			B: 2,
-			C: 20,
-			D: "a"},
-		valus: []interface{}{"1", 2, 20, "a"},
-		keys:  []string{"A", "B", "C", "D"},
-		types: []string{"string", "int16", "int64", "string"},
+		name: "Happy Case",
+		// c and m are populated to remove warning
+		arg:    tc1ArgType{c: "", m: 1.1},
+		result: tc1Results,
 	},
 }

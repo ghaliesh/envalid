@@ -29,6 +29,11 @@ func checkFloat(val string, key string) {
 }
 
 func checkString(val string, key string) {
+	if val == "true" || val == "false" {
+		err := utils.KeyIsNotOfRightTypeError(key, val, "string")
+		panic(err)
+	}
+
 	_, err := strconv.ParseFloat(val, 64)
 	if err == nil {
 		err = utils.KeyIsNotOfRightTypeError(key, val, "string")
