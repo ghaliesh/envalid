@@ -35,3 +35,20 @@ func TestPanicIfError(t *testing.T) {
 		})
 	}
 }
+
+func TestChecks(t *testing.T) {
+	for _, main := range checksTc {
+		for _, tc := range main.checkFuncsData {
+
+			t.Run(tc.name, func(t *testing.T) {
+
+				wrapper := func() { tc.funcInTest(main.arg, "key") }
+				if tc.shouldPanic {
+					require.Panics(t, wrapper)
+				} else {
+					require.NotPanics(t, wrapper)
+				}
+			})
+		}
+	}
+}
