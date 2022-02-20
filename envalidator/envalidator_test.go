@@ -1,8 +1,12 @@
 package envalidator
 
 import (
+	"fmt"
+	"os"
+	"path/filepath"
 	"testing"
 
+	"github.com/ghaliesh/envalid/utils"
 	"github.com/stretchr/testify/require"
 )
 
@@ -19,5 +23,25 @@ func TestGetEnvFields(t *testing.T) {
 				require.Equal(t, expected["key"], v["key"])
 			}
 		})
+	}
+}
+
+var dirname, _ = os.Getwd()
+var path = filepath.Join(dirname, "../tmp/.env")
+
+func TestValidate(t *testing.T) {
+	for _, main := range validateTCs {
+		for i, v := range main.validators {
+			t.Run(main.name+"#"+fmt.Sprint(i), func(t *testing.T) {
+				utils.CreateTmpEnvFile([]byte(main.envFile))
+				wrappr := func() { Validate(v, path) }
+
+				if main.shouldPanic {
+					require.Panics(t, wrappr)
+				} else {
+					require.NotPanics(t, wrappr)
+				}
+			})
+		}
 	}
 }
