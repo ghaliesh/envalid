@@ -52,3 +52,28 @@ func TestChecks(t *testing.T) {
 		}
 	}
 }
+
+func TestChecksType(t *testing.T) {
+	for _, main := range checkTypeTcs {
+		for _, typeof := range main.matchingTypes {
+
+			t.Run(main.name, func(t *testing.T) {
+
+				wrapper := func() { checkType(typeof, main.key, main.value) }
+				require.NotPanics(t, wrapper)
+			})
+		}
+
+		for _, types := range main.nonMatchingTyps {
+			for _, typeof := range types {
+
+				t.Run(main.name, func(t *testing.T) {
+
+					wrapper := func() { checkType(typeof, main.key, main.value) }
+					require.Panics(t, wrapper)
+				})
+			}
+		}
+
+	}
+}

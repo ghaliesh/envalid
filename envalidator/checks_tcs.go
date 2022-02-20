@@ -134,10 +134,11 @@ var checksTc = checkFuncsTCs{
 }
 
 type checkTypeTC struct {
-	name          string
-	key           string
-	value         string
-	matchingTypes []reflect.Kind
+	name            string
+	key             string
+	value           string
+	matchingTypes   []reflect.Kind
+	nonMatchingTyps [][]reflect.Kind
 }
 
 type checkTypeTCs = []checkTypeTC
@@ -184,25 +185,38 @@ var unhandledTypes = []reflect.Kind{
 
 var checkTypeTcs = checkTypeTCs{
 	{
-		name:          "String match",
-		value:         utils.RandomString(5),
-		key:           "key",
-		matchingTypes: strings,
+		name:            "String match",
+		value:           utils.RandomString(5),
+		key:             "key",
+		matchingTypes:   strings,
+		nonMatchingTyps: [][]reflect.Kind{integers, floats, bools, unhandledTypes, unsignedInts},
 	},
 	{
-		name:          "Int match",
-		value:         fmt.Sprint(utils.RandomInt()),
-		key:           "key",
-		matchingTypes: append(integers),
+		name:            "Int match",
+		value:           fmt.Sprint(utils.RandomInt()),
+		key:             "key",
+		matchingTypes:   integers,
+		nonMatchingTyps: [][]reflect.Kind{strings, bools, unhandledTypes},
 	},
 	{
-		name:  "Unit match",
-		value: fmt.Sprint(utils.RandomUnit()),
-		key:   "key",
+		name:            "Unit match",
+		value:           fmt.Sprint(utils.RandomUnit()),
+		key:             "key",
+		matchingTypes:   unsignedInts,
+		nonMatchingTyps: [][]reflect.Kind{strings, bools, unhandledTypes},
 	},
 	{
-		name:  "Float match",
-		value: fmt.Sprint(utils.RandomFloat()),
-		key:   "key",
+		name:            "Float match",
+		value:           fmt.Sprint(utils.RandomFloat()),
+		key:             "key",
+		matchingTypes:   floats,
+		nonMatchingTyps: [][]reflect.Kind{strings, bools, unhandledTypes},
+	},
+	{
+		name:            "Bool match",
+		value:           fmt.Sprint(true),
+		key:             "key",
+		matchingTypes:   bools,
+		nonMatchingTyps: [][]reflect.Kind{integers, unhandledTypes, floats, unhandledTypes},
 	},
 }
