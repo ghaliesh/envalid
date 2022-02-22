@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -42,6 +43,9 @@ var (
 
 func TestRandom(t *testing.T) {
 	results := []string{}
+	resultsInt := []int64{}
+	resultsUInt := []uint32{}
+	resultsFloat := []float64{}
 
 	result := RandomString(length)
 	require.Len(t, result, length)
@@ -50,8 +54,46 @@ func TestRandom(t *testing.T) {
 
 	for range timesToRun {
 		res := RandomString(length)
+		resInt := RandomInt()
+		resFloat := RandomFloat()
+		resUnit := RandomUnit()
 		require.NotContains(t, results, res)
-
+		require.NotContains(t, resultsInt, resInt)
+		require.NotContains(t, resultsFloat, resFloat)
+		require.NotContains(t, resultsUInt, resUnit)
+		resultsUInt = append(resultsUInt, resUnit)
+		resultsFloat = append(resultsFloat, resFloat)
+		resultsInt = append(resultsInt, resInt)
 		results = append(results, res)
 	}
+}
+
+func TestExists(t *testing.T) {
+	for _, tc := range existsTestcases {
+		t.Run(tc.name, func(t *testing.T) {
+			result := Exists(tc.dict, tc.target, tc.lookForKeys)
+			require.Equal(t, tc.shouldExist, result)
+		})
+	}
+}
+
+func TestCreateFileTmp(t *testing.T) {
+	data := RandomString(10)
+	CreateTmpEnvFile([]byte(data))
+
+	require.FileExists(t, "../tmp/.env")
+	file, err := os.ReadFile("../tmp/.env")
+	require.NoError(t, err)
+	require.Equal(t, string(file), data)
+}
+
+func TestKeyDoesNotExistError(t *testing.T) {
+	err := KeyDoesNotExistsError("key")
+	require.Error(t, err)
+	require.Equal(t, err.Error(), "key is missing from .env file")
+}
+
+func TestKeyKeyIsNotOfRightTypeError(t *testing.T) {
+	err := KeyIsNotOfRightTypeError("key", "int", "value")
+	require.Error(t, err)
 }
