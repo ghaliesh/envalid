@@ -1,7 +1,6 @@
 package envalidator
 
 import (
-	"fmt"
 	"reflect"
 
 	reader "github.com/ghaliesh/envalid/file"
@@ -33,10 +32,7 @@ func Validate(validator interface{}, path string) {
 	validationRules := getEnvFields(validator)
 
 	for _, rule := range validationRules {
-		key, ok := rule["key"].(string)
-		if !ok {
-			panic(fmt.Errorf("all .env file keys should be strings"))
-		}
+		key, _ := rule["key"].(string)
 
 		checkKeyExist(envFile, key)
 
