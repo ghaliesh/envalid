@@ -21,7 +21,7 @@ var keyThatDontExist string = utils.RandomString(5)
 
 var keyValPairs dictType = dictType{key: "value"}
 
-var CheckExistTestCases = []CheckExistTC{
+var checkExistTestCases = []CheckExistTC{
 	{
 		name:        "Key Exists",
 		keyValPairs: keyValPairs,

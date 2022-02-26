@@ -4,7 +4,7 @@ import (
 	"reflect"
 )
 
-type GetEnvFieldsTestCases struct {
+type getEnvFieldsTestCases struct {
 	name   string
 	arg    interface{}
 	result Fields
@@ -28,7 +28,7 @@ var tc1Results Fields = Fields{
 	FieldInfo{"key": "K", "type": reflect.Int32, "tags": ""},
 }
 
-var getEnvFieldsTC []GetEnvFieldsTestCases = []GetEnvFieldsTestCases{
+var getEnvFieldsTC []getEnvFieldsTestCases = []getEnvFieldsTestCases{
 	{
 		name: "Happy Case",
 		// c and m are populated to remove warning
