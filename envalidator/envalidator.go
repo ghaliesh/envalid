@@ -26,7 +26,6 @@ func getEnvFields(g interface{}) Fields {
 }
 
 func Validate(validator interface{}, path string) {
-	reader := reader.EnvFileReader{}
 	envFile := reader.ReadEnvFile(path)
 
 	validationRules := getEnvFields(validator)

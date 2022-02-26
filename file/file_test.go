@@ -22,7 +22,7 @@ func TestReadEnvFile(t *testing.T) {
 			}
 
 			// Test result
-			actualResult := envReader.ReadEnvFile(path)
+			actualResult := ReadEnvFile(path)
 			expectedResult := tc.expectedResult
 			require.Equal(t, expectedResult, actualResult)
 
