@@ -7,21 +7,21 @@ import (
 	"github.com/ghaliesh/envalid/utils"
 )
 
-type CheckExistTC struct {
+type checkExistTC struct {
 	name        string
 	keyValPairs dictType
 	key         string
 	shouldPanic bool
 }
 
-type CheckExistTCs = []CheckExistTC
+type checkExistTCs = []checkExistTC
 
 var key string = utils.RandomString(4)
 var keyThatDontExist string = utils.RandomString(5)
 
 var keyValPairs dictType = dictType{key: "value"}
 
-var CheckExistTestCases = []CheckExistTC{
+var checkExistTestCases = []checkExistTC{
 	{
 		name:        "Key Exists",
 		keyValPairs: keyValPairs,

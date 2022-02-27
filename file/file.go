@@ -13,15 +13,9 @@ const (
 	pairsep = "="
 )
 
-type Reader interface {
-	ReadEnvFile(path string) string
-}
-
-type EnvFileReader struct{}
-
 type EnvKeyValuePairs = map[string]string
 
-func (ef *EnvFileReader) getFile(path string) []byte {
+func getFile(path string) []byte {
 	file, err := os.ReadFile(path)
 	if err != nil {
 		panic("Can't read file in path")
@@ -30,7 +24,7 @@ func (ef *EnvFileReader) getFile(path string) []byte {
 	return file
 }
 
-func (ef *EnvFileReader) stringify(file []byte) string {
+func stringify(file []byte) string {
 	stringified := string(file)
 	if len(stringified) == 0 {
 		panic("File is either empty or invalid")
@@ -39,7 +33,7 @@ func (ef *EnvFileReader) stringify(file []byte) string {
 	return stringified
 }
 
-func (ef *EnvFileReader) getKeypair(pair string) (key string, value string) {
+func getKeypair(pair string) (key string, value string) {
 	_keyval := strings.Split(pair, pairsep)
 	keyval := utils.Filter(_keyval, func(s string) bool { return len(s) > 0 })
 	len := len(keyval)
@@ -59,16 +53,16 @@ func (ef *EnvFileReader) getKeypair(pair string) (key string, value string) {
 	return strings.TrimSpace(key), strings.TrimSpace(value)
 }
 
-func (ef *EnvFileReader) ReadEnvFile(path string) EnvKeyValuePairs {
-	file := ef.getFile(path)
-	str := ef.stringify(file)
+func ReadEnvFile(path string) EnvKeyValuePairs {
+	file := getFile(path)
+	str := stringify(file)
 	pairs := strings.Split(str, linesep)
 
 	var result = make(EnvKeyValuePairs)
 
 	for _, p := range pairs {
 		if len(p) > 1 {
-			key, value := ef.getKeypair(strings.TrimSpace(p))
+			key, value := getKeypair(strings.TrimSpace(p))
 			if len(key) != 0 {
 				result[key] = value
 			}

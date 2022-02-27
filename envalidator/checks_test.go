@@ -8,7 +8,7 @@ import (
 )
 
 func TestCheckExists(t *testing.T) {
-	for _, tc := range CheckExistTestCases {
+	for _, tc := range checkExistTestCases {
 		t.Run(tc.name, func(t *testing.T) {
 			wrapper := func() { checkKeyExist(tc.keyValPairs, tc.key) }
 
