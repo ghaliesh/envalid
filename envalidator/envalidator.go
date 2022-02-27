@@ -6,15 +6,15 @@ import (
 	reader "github.com/ghaliesh/envalid/file"
 )
 
-type FieldInfo = map[string]interface{}
-type Fields = []FieldInfo
+type fieldInfo = map[string]interface{}
+type fields = []fieldInfo
 
-func getEnvFields(g interface{}) Fields {
-	var result Fields
+func getEnvFields(g interface{}) fields {
+	var result fields
 
 	allFields := reflect.VisibleFields(reflect.TypeOf(g))
 	for _, f := range allFields {
-		fieldInfo := FieldInfo{
+		fieldInfo := fieldInfo{
 			"key":  f.Name,
 			"type": f.Type.Kind(),
 			"tags": f.Tag,

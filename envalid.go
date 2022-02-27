@@ -1,9 +1,15 @@
 package envalid
 
 import (
-	"fmt"
+	"github.com/ghaliesh/envalid/envalidator"
 )
 
-func Envalid() {
-	fmt.Println("envalid is in progress...")
+type EnvalidInterface interface {
+	ValidateEnv(rules interface{}, path string)
+}
+
+type Envalid struct{}
+
+func (e *Envalid) ValidateEnv(validator interface{}, path string) {
+	envalidator.Validate(validator, path)
 }

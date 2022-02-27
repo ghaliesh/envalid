@@ -7,7 +7,7 @@ import (
 type getEnvFieldsTestCases struct {
 	name   string
 	arg    interface{}
-	result Fields
+	result fields
 }
 
 type tc1ArgType struct {
@@ -19,13 +19,13 @@ type tc1ArgType struct {
 	K int32
 }
 
-var tc1Results Fields = Fields{
-	FieldInfo{"key": "A", "type": reflect.Int, "tags": ""},
-	FieldInfo{"key": "B", "type": reflect.Uint, "tags": ""},
-	FieldInfo{"key": "c", "type": reflect.String, "tags": ""},
-	FieldInfo{"key": "m", "type": reflect.Float32, "tags": ""},
-	FieldInfo{"key": "N", "type": reflect.Float64, "tags": ""},
-	FieldInfo{"key": "K", "type": reflect.Int32, "tags": ""},
+var tc1Results fields = fields{
+	fieldInfo{"key": "A", "type": reflect.Int, "tags": ""},
+	fieldInfo{"key": "B", "type": reflect.Uint, "tags": ""},
+	fieldInfo{"key": "c", "type": reflect.String, "tags": ""},
+	fieldInfo{"key": "m", "type": reflect.Float32, "tags": ""},
+	fieldInfo{"key": "N", "type": reflect.Float64, "tags": ""},
+	fieldInfo{"key": "K", "type": reflect.Int32, "tags": ""},
 }
 
 var getEnvFieldsTC []getEnvFieldsTestCases = []getEnvFieldsTestCases{
