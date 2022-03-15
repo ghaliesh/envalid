@@ -36,25 +36,7 @@ var checkExistTestCases = []checkExistTC{
 	},
 }
 
-type checkPanicIfErrorTC struct {
-	name        string
-	err         error
-	val         string
-	key         string
-	typeof      string
-	shouldPanic bool
-}
-
-var panicVal = utils.RandomString(5)
-var panicKey = utils.RandomString(5)
-var panicTypeof = utils.RandomString(5)
-var panicTCError = utils.KeyIsNotOfRightTypeError(key, panicVal, panicTypeof)
-var panicIfErrorTCs = []checkPanicIfErrorTC{
-	{name: "Should Not Panic", err: nil, key: "", val: "", typeof: "", shouldPanic: false},
-	{name: "Should Panic", err: panicTCError, key: panicKey, val: panicVal, shouldPanic: true},
-}
-
-type checkFunc = func(val string, key string)
+type checkFunc = func(val string, key string) error
 type checkFuncData struct {
 	name        string
 	funcInTest  checkFunc

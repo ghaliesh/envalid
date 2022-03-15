@@ -34,12 +34,12 @@ func TestValidate(t *testing.T) {
 		for i, v := range main.validators {
 			t.Run(main.name+"#"+fmt.Sprint(i), func(t *testing.T) {
 				utils.CreateTmpEnvFile([]byte(main.envFile))
-				wrappr := func() { Validate(v, path) }
+				err := Validate(v, path)
 
 				if main.shouldPanic {
-					require.Panics(t, wrappr)
+					require.Error(t, err)
 				} else {
-					require.NotPanics(t, wrappr)
+					require.NoError(t, err)
 				}
 			})
 		}

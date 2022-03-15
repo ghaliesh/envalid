@@ -8,8 +8,16 @@ type EnvalidInterface interface {
 	ValidateEnv(rules interface{}, path string)
 }
 
-type Envalid struct{}
+type OnErrorHandler = func(err error)
+
+type Envalid struct {
+	OnError OnErrorHandler
+}
 
 func (e *Envalid) ValidateEnv(validator interface{}, path string) {
-	envalidator.Validate(validator, path)
+	err := envalidator.Validate(validator, path)
+
+	if err != nil {
+		e.OnError(err)
+	}
 }

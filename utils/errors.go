@@ -1,6 +1,11 @@
 package utils
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
+
+var InvalidEnvFile = errors.New("Env file is either empty or invalid.")
 
 func KeyDoesNotExistsError(key string) error {
 	return fmt.Errorf("%s is missing from .env file", key)
