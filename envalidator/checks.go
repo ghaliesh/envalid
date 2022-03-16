@@ -44,7 +44,7 @@ func checkType(typeof reflect.Kind, key, value string) error {
 		return checkString(value, key)
 
 	default:
-		return nil
+		return utils.ErrUnhandledTypes
 	}
 }
 
@@ -74,6 +74,7 @@ func checkFloat(val string, key string) error {
 }
 
 func checkString(val string, key string) error {
+
 	if val == "true" || val == "false" {
 		return utils.KeyIsNotOfRightTypeError(key, val, "string")
 	}

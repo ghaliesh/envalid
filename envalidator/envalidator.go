@@ -38,12 +38,18 @@ func Validate(validator interface{}, path string) error {
 	for _, rule := range validationRules {
 		key, _ := rule["key"].(string)
 
-		checkKeyExist(envFile, key)
+		err := checkKeyExist(envFile, key)
+		if err != nil {
+			return err
+		}
 
 		envalue := envFile[key]
 		typeof := rule["type"].(reflect.Kind)
 
-		checkType(typeof, key, envalue)
+		err = checkType(typeof, key, envalue)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

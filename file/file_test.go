@@ -19,7 +19,7 @@ func TestReadEnvFile(t *testing.T) {
 			actualResult, err := ReadEnvFile(path)
 			expectedResult := tc.expectedResult
 			if len(tc.envFileContent) == 0 {
-				require.EqualError(t, err, utils.InvalidEnvFile.Error())
+				require.EqualError(t, err, utils.ErrInvalidEnvFile.Error())
 			} else {
 				require.NoError(t, err)
 				require.Equal(t, expectedResult, actualResult)

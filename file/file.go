@@ -27,7 +27,7 @@ func getFile(path string) ([]byte, error) {
 func stringify(file []byte) (string, error) {
 	stringified := string(file)
 	if len(stringified) == 0 {
-		return "", utils.InvalidEnvFile
+		return "", utils.ErrInvalidEnvFile
 	}
 
 	return stringified, nil

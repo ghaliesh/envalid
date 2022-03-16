@@ -5,7 +5,8 @@ import (
 	"fmt"
 )
 
-var InvalidEnvFile = errors.New("Env file is either empty or invalid.")
+var ErrInvalidEnvFile = errors.New("env file is either empty or invalid")
+var ErrUnhandledTypes = errors.New("unknown types, only primitive types are allowed")
 
 func KeyDoesNotExistsError(key string) error {
 	return fmt.Errorf("%s is missing from .env file", key)
