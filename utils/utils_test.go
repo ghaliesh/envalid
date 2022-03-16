@@ -90,7 +90,7 @@ func TestCreateFileTmp(t *testing.T) {
 func TestKeyDoesNotExistError(t *testing.T) {
 	err := KeyDoesNotExistsError("key")
 	require.Error(t, err)
-	require.Equal(t, err.Error(), "key is missing from .env file")
+	require.Equal(t, err.Error(), "envalid: key is missing from .env file")
 }
 
 func TestKeyKeyIsNotOfRightTypeError(t *testing.T) {

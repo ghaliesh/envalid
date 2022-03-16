@@ -25,5 +25,4 @@ func TestValidate(t *testing.T) {
 	testSubject.OnError = onErrorHandler
 	testSubject.ValidateEnv()
 	require.True(t, funcIsCalled)
-
 }
