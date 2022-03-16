@@ -10,27 +10,13 @@ import (
 func TestCheckExists(t *testing.T) {
 	for _, tc := range checkExistTestCases {
 		t.Run(tc.name, func(t *testing.T) {
-			wrapper := func() { checkKeyExist(tc.keyValPairs, tc.key) }
+			err := checkKeyExist(tc.keyValPairs, tc.key)
 
 			if tc.shouldPanic {
-				err := utils.KeyDoesNotExistsError(tc.key)
-				require.PanicsWithError(t, err.Error(), wrapper)
+				expectedError := utils.KeyDoesNotExistsError(tc.key)
+				require.EqualError(t, err, expectedError.Error())
 			} else {
-				require.NotPanics(t, wrapper)
-			}
-		})
-	}
-}
-
-func TestPanicIfError(t *testing.T) {
-	for _, tc := range panicIfErrorTCs {
-		t.Run(tc.name, func(t *testing.T) {
-			wrapper := func() { panicIfError(tc.err, tc.key, tc.val, tc.val) }
-
-			if tc.shouldPanic {
-				require.Panics(t, wrapper)
-			} else {
-				require.NotPanics(t, wrapper)
+				require.NoError(t, err)
 			}
 		})
 	}
@@ -42,11 +28,11 @@ func TestChecks(t *testing.T) {
 
 			t.Run(tc.name, func(t *testing.T) {
 
-				wrapper := func() { tc.funcInTest(main.arg, "key") }
+				err := tc.funcInTest(main.arg, "key")
 				if tc.shouldPanic {
-					require.Panics(t, wrapper)
+					require.Error(t, err)
 				} else {
-					require.NotPanics(t, wrapper)
+					require.NoError(t, err)
 				}
 			})
 		}
@@ -59,8 +45,8 @@ func TestChecksType(t *testing.T) {
 
 			t.Run(main.name, func(t *testing.T) {
 
-				wrapper := func() { checkType(typeof, main.key, main.value) }
-				require.NotPanics(t, wrapper)
+				err := checkType(typeof, main.key, main.value)
+				require.NoError(t, err)
 			})
 		}
 
@@ -69,8 +55,8 @@ func TestChecksType(t *testing.T) {
 
 				t.Run(main.name, func(t *testing.T) {
 
-					wrapper := func() { checkType(typeof, main.key, main.value) }
-					require.Panics(t, wrapper)
+					err := checkType(typeof, main.key, main.value)
+					require.Error(t, err)
 				})
 			}
 		}

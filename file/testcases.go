@@ -7,15 +7,6 @@ import (
 
 var dirname, _ = os.Getwd()
 var path = filepath.Join(dirname, "../tmp/.env")
-var invalidpath = "in/valid/pa/th"
-
-func funcToPanicDuetoEmptyFile() {
-	ReadEnvFile(path)
-}
-
-func funcToPanicDuetoNonExistentPath() {
-	ReadEnvFile(invalidpath)
-}
 
 type TestCase struct {
 	name           string

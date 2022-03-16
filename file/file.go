@@ -15,22 +15,22 @@ const (
 
 type EnvKeyValuePairs = map[string]string
 
-func getFile(path string) []byte {
+func getFile(path string) ([]byte, error) {
 	file, err := os.ReadFile(path)
 	if err != nil {
-		panic("Can't read file in path")
+		return nil, err
 	}
 
-	return file
+	return file, nil
 }
 
-func stringify(file []byte) string {
+func stringify(file []byte) (string, error) {
 	stringified := string(file)
 	if len(stringified) == 0 {
-		panic("File is either empty or invalid")
+		return "", utils.ErrInvalidEnvFile
 	}
 
-	return stringified
+	return stringified, nil
 }
 
 func getKeypair(pair string) (key string, value string) {
@@ -53,9 +53,16 @@ func getKeypair(pair string) (key string, value string) {
 	return strings.TrimSpace(key), strings.TrimSpace(value)
 }
 
-func ReadEnvFile(path string) EnvKeyValuePairs {
-	file := getFile(path)
-	str := stringify(file)
+func ReadEnvFile(path string) (EnvKeyValuePairs, error) {
+	file, err := getFile(path)
+	if err != nil {
+		return nil, err
+	}
+
+	str, err := stringify(file)
+	if err != nil {
+		return nil, err
+	}
 	pairs := strings.Split(str, linesep)
 
 	var result = make(EnvKeyValuePairs)
@@ -69,5 +76,5 @@ func ReadEnvFile(path string) EnvKeyValuePairs {
 		}
 	}
 
-	return result
+	return result, nil
 }

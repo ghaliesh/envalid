@@ -6,6 +6,8 @@ import (
 	reader "github.com/ghaliesh/envalid/file"
 )
 
+type OnErrorHandler = func(err error)
+
 type fieldInfo = map[string]interface{}
 type fields = []fieldInfo
 
@@ -25,19 +27,30 @@ func getEnvFields(g interface{}) fields {
 	return result
 }
 
-func Validate(validator interface{}, path string) {
-	envFile := reader.ReadEnvFile(path)
+func Validate(validator interface{}, path string) error {
+	envFile, err := reader.ReadEnvFile(path)
+	if err != nil {
+		return err
+	}
 
 	validationRules := getEnvFields(validator)
 
 	for _, rule := range validationRules {
 		key, _ := rule["key"].(string)
 
-		checkKeyExist(envFile, key)
+		err := checkKeyExist(envFile, key)
+		if err != nil {
+			return err
+		}
 
 		envalue := envFile[key]
 		typeof := rule["type"].(reflect.Kind)
-		checkType(typeof, key, envalue)
+
+		err = checkType(typeof, key, envalue)
+		if err != nil {
+			return err
+		}
 	}
 
+	return nil
 }

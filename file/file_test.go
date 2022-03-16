@@ -15,19 +15,20 @@ func TestReadEnvFile(t *testing.T) {
 			err := utils.CreateTmpEnvFile(envFile)
 			require.NoError(t, err)
 
-			// Edge case: Fucntion Panic
-			if len(tc.envFileContent) == 0 {
-				require.Panics(t, funcToPanicDuetoEmptyFile)
-				return
-			}
-
 			// Test result
-			actualResult := ReadEnvFile(path)
+			actualResult, err := ReadEnvFile(path)
 			expectedResult := tc.expectedResult
-			require.Equal(t, expectedResult, actualResult)
-
+			if len(tc.envFileContent) == 0 {
+				require.EqualError(t, err, utils.ErrInvalidEnvFile.Error())
+			} else {
+				require.NoError(t, err)
+				require.Equal(t, expectedResult, actualResult)
+			}
 		})
 	}
 
-	require.Panics(t, funcToPanicDuetoNonExistentPath)
+	var invalidpath = "in/valid/pa/th"
+	_, err := ReadEnvFile(invalidpath)
+	require.Error(t, err)
+
 }
